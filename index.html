@@ -1,228 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vamshi - Business Analyst</title>
-    <link rel="icon" href="icon.png" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-            color: #333;
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 20px;
-            border-bottom: 4px solid #61dafb;
-        }
-
-        header h1 {
-            font-size: 36px;
-            margin-bottom: 5px;
-        }
-
-        header h2 {
-            font-size: 22px;
-        }
-
-        section {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
-
-        h2 {
-            color: #333;
-        }
-
-        p {
-            color: #555;
-        }
-
-        .contact-info {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .contact-info div {
-            flex: 1;
-            margin-right: 20px;
-        }
-
-        .icon {
-            font-size: 24px;
-            margin-right: 10px;
-        }
-
-        .professional-expertise,
-        .technical-skills,
-        .achievements,
-        .professional-experience,
-        .education {
-            margin-top: 20px;
-        }
-
-        .achievement-item {
-            margin-bottom: 10px;
-        }
-
-        .icon-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .icon-list li {
-            margin-bottom: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Application Form</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
 
-    <header>
-        <h1>Vamshi Sai Krishna Arelli</h1>
-        <h2>Business System Analyst</h2>
-    </header>
 
-    <section>
-        <h2>Contact Information</h2>
-        <div class="contact-info">
-            <div>
-                <p class="icon"><i class="fas fa-user"></i></p>
-                <p><strong>Name:</strong> Vamshi Sai Krishna Arelli</p>
-                <p class="icon"><i class="fas fa-map-marker-alt"></i></p>
-                <p><strong>Location:</strong> Hyderabad, Telangana</p>
-            </div>
-            <div>
-                <p class="icon"><i class="fas fa-phone"></i></p>
-                <p><strong>Phone:</strong> +91 9121422818</p>
-                <p class="icon"><i class="far fa-envelope"></i></p>
-                <p><strong>Email:</strong> <a href="mailto:vamshi.pcb@gmail.com">vamshi.pcb@gmail.com</a></p>
-            </div>
-            <div>
-                <p class="icon"><i class="fab fa-linkedin"></i></p>
-                <p><strong>LinkedIn:</strong> <a href="https://in.linkedin.com/in/vamshi-arelli" target="_blank">Vamshi Arelli</a></p>
-            </div>
-        </div>
-    </section>
+<div id="container">
+  <div class="column" id="jobDescription">
+    <h2>Resume Details</h2>
+    <label for="jobDescriptionText">Job Description:</label>
+    <textarea id="jobDescriptionText" rows="22" maxlength="2000" placeholder="Paste the Job Description Here (Org. Name & Job Role are Must) (2000 Char Max)..." oninput="updateCharacterCount()"></textarea>
+    <div id="char-count">0 characters</div>
+  </div>
 
-    <section class="professional-expertise">
-        <h2>Summary and Objective</h2>
-        <p>Dedicated and results-driven Business Analyst with over 2 years of experience in requirements gathering, process improvement, and project management. Proven ability to bridge the gap between business objectives and technical solutions, resulting in successful project outcomes. Adept at collaborating with cross-functional teams to drive process efficiencies and deliver data-driven insights. Strong analytical, communication, and problem-solving skills with a track record of optimizing business operations and enhancing decision-making processes.</p>
-    </section>
+  <div class="column" id="resumeDetails">
+    <h2>Resume Details</h2>
+    <label for="name">Name:</label>
+    <input type="text" id="name" placeholder="Enter Name..">
 
-    <section class="professional-expertise">
-        <h2>Professional Expertise</h2>
-        <ul>
-            <li><strong>Business Requirements Gathering:</strong> Proficient in eliciting, documenting, and analyzing business requirements through various techniques such as stakeholders meeting, collaborative workshops, and structured surveys. Skilled at translating user needs into clear and actionable specifications.</li>
-            <li><strong>Process Improvement:</strong> Experienced in evaluating existing processes, identifying inefficiencies, and recommending improvements to enhance operational efficiency and reduce costs.</li>
-            <li><strong>Project Management:</strong> Demonstrated ability to manage end-to-end project lifecycles, from project initiation and planning to execution and closure. Proficient in project scheduling, scope management, and resource allocation.</li>
-            <li><strong>Stakeholder Collaboration:</strong> Effective communicator with a track record of collaborating with cross-functional teams, including developers, QA, and management, to ensure project alignment with business goals.</li>
-            <li><strong>Technical Acumen:</strong> Familiar with various technologies and tools. Proficient in data analysis and reporting tools to create dashboards and reports.</li>
-            <li><strong>Agile/Scrum, Waterfall, V&V Methodologies:</strong> Skilled in working within Agile/Scrum, Waterfall, and V&V environments, participating in sprint planning, backlog grooming, and conducting user acceptance testing (UAT).</li>
-            
-            <!-- ... (other expertise items) ... -->
-        </ul>
-    </section>
+    <label for="contact">Contact Info:</label>
+    <input type="text" id="contact" placeholder="📍Hyderabad • ☏9xxxx • ✉@gmail.com • LinkedIn">
+    
 
-    <section class="technical-skills">
-        <h2>Technical Skills</h2>
-        <ul>
-            <li><strong>Business Analysis:</strong> Project Management, Product Management, Requirements Gathering, Documentation</li>
-            <li><strong>Tools:</strong> MS Office, Power Automate, draw.io, Visio, Power BI</li>
-            <li><strong>Languages:</strong> Python, SQL</li>
-            <li><strong>Software Environments:</strong> .Net and SQL</li>
-            <li><strong>Methodology:</strong> Agile - Scrum, V&V Model & Waterfall model</li>
-            <li><strong>Testing Methods:</strong> Functional, UAT, End-to-End, Unit, Regression, GUI</li>
-            <li><strong>Robotic Process Automation:</strong> Power Automate</li>
-            <!-- ... (technical skills items) ... -->
-        </ul>
-    </section>
+    <label for="education">Education:</label>
+    <textarea id="education" rows="1" placeholder="Matriculation, College (Institute name, Place of study, Year of Pass)"></textarea>
 
-    <section class="achievements">
-        <h2>Achievements</h2>
-        <ul>
-            <li class="achievement-item">Awarded by our CEO for automating the Operational Qualification process that has been followed manually for 10 years. Utilized Python and AI to accomplish this task, resulting in significant time and cost savings.</li>
-            <li class="achievement-item">Received a Spot award in recognition of outstanding performance and contributions to a critical project.</li>
-            <li class="achievement-item">Awarded Employee of the Month for receiving client appreciation for extended support and ensuring a smooth project closure within specified timelines, reflecting exceptional dedication and teamwork.</li>
-        </ul>
-    </section>
+    <label for="experience">Experience:</label>
+    <textarea id="experience" rows="1", placeholder="Org. Name, From-To, Responsibilities"></textarea>
 
-    <section class="professional-experience">
-        <h2>Professional Experience</h2>
-        <h3>AmpleLogic Pvt. Ltd - Business Analyst (Oct 2021 – Oct 2023)</h3>
-        <h4>Project: Quality Management System</h4>
-        <p>Clients: Micro labs, RPG Life Sciences, Akums, Acme Group (Immacule, Generics & Formulation)</p>
-        <ul>
-            <li>Modernized manual processes into an electronic system with nine modules, emphasizing application development.</li>
-            <li>Achieved a 45% increase in efficiency for request submission, approval, evaluation, and implementation processes.</li>
-            <li>Collaborated with Solution Architect and stakeholders to translate requirements into specifications, ensuring thorough and proper consulting.</li>
-            <li>Conducted on-site client visits for requirement gathering and product demos, aiding in clarification.</li>
-            <li>Contributed to daily standup meetings for efficient project communication and root cause analysis.</li>
-            <li>Managed validation documents, including FRS, DQ, OQ, and RTM, ensuring maintenance.</li>
-            <li>Helped support team in resolving issues, ensuring the smooth operation of the system and timely issue resolution.</li>
-            <li>Completed projects in a single stretch or phase-wise, depending on the client's requirements and project deadlines, ensuring flexibility and alignment with client expectations in line with their objectives.</li>
-        </ul>
+    <label for="skills">Skills:</label>
+    <textarea id="skills" rows="1", placeholder="Techical Skills Only(Eg: Python, Java, .Net)"></textarea>
 
-        <h4>Project: Regulatory Surveillance Management System</h4>
-        <p>Client: Cipla</p>
-        <ul>
-            <li>Developed a new product from scratch using a low-code platform, emphasizing generation.</li>
-            <li>Translated client requirements into specifications with Solution Architect, ensuring alternative solutions.</li>
-            <li>Captured and documented customer requirements, user stories, and acceptance scenarios, enhancing research.</li>
-            <li>Presented product features in engaging demonstrations, focusing on deliverables.</li>
-            <li>Produced Requirements Specifications, CRF, and RTM documents for project clarity and refining.</li>
-            <li>Participated in daily standup meetings for seamless team communication and deployment.</li>
-        </ul>
-    </section>
+    <label for="certifications">Certifications:</label>
+    <textarea id="certifications" rows="1" placeholder="Certifiction Name & Obtained On"></textarea>
 
-    <section class="education">
-        <h2>Education</h2>
-            <li class="achievement-item"><strong>Sreenidhi Institute of Science and Technology </strong>- Bachelor of Technology (B.Tech) Graduated in 2021</li>
+    <label for="additionalInfo">Additional Information:</label>
+    <textarea id="additionalInfo" rows="4", placeholder="Additional Information, if any(Eg: Achievemets, Personal Projects, Publications, Patents etc.,)"></textarea>
+  </div>
+</div>
 
-            <li class="achievement-item"><strong>GOVT Polytechnic, Warangal </strong>- Diploma in Electrical and Electronic Engineering Graduated in 2017</li>
-    </section>
+<div id="sectionHeader" class="text-box">
+  <h2 style="text-align: center;">Sections to be Included</h2>
+  <div id="checkboxes" class="checkbox-row">
+    <label><input type="checkbox" id="objectiveCheckbox"> Objective</label>
+    <label><input type="checkbox" id="experienceCheckbox"> Professional_Experience</label>
+    <label><input type="checkbox" id="skillsCheckbox"> Skills</label>
+    <label><input type="checkbox" id="expertiseCheckbox"> Expertise</label>
+    <label><input type="checkbox" id="hobbiesCheckbox"> Hobbies</label>
+  </div>
+</div>  
 
-    <section>
-        <h2>Preferred Job Location</h2>
-        <p>Hyderabad, Chennai, Bangalore, Pune</p>
-    </section>
+<div id="buttons" class="text-box">
+  <a href="#" class="btn btn-white btn-animate" onclick="submitForm()">Submit</a>
+  <a href="#" class="btn btn-white btn-animate" onclick="OpenPDF()">Open PDF</a>
+  <a href="#" class="btn btn-white btn-animate" onclick="OpenWord()">Open Word</a>
+  <a href="#" class="btn btn-white btn-animate" onclick="SavePDF()">Save PDF</a>
+  <a href="#" class="btn btn-white btn-animate" onclick="SaveWord()">Save Docx</a>
+  <a href="#" class="btn btn-white btn-animate" onclick="resetForm()">Reset</a>
+</div>
 
-    <section>
-        <h2>Contact Information</h2>
-        <div class="contact-info">
-            <div>
-                <p class="icon"><i class="fas fa-user"></i></p>
-                <p><strong>Name:</strong> Vamshi Sai Krishna Arelli</p>
-                <p class="icon"><i class="fas fa-map-marker-alt"></i></p>
-                <p><strong>Location:</strong> Hyderabad, Telangana</p>
-            </div>
-            <div>
-                <p class="icon"><i class="fas fa-phone"></i></p>
-                <p><strong>Phone:</strong> +91-9121422818</p>
-                <p class="icon"><i class="far fa-envelope"></i></p>
-                <p><strong>Email:</strong> <a href="mailto:vamshi.pcb@gmail.com">vamshi.pcb@gmail.com</a></p>
-            </div>
-            <div>
-                <p class="icon"><i class="fab fa-linkedin"></i></p>
-                <p><strong>LinkedIn:</strong> <a href="https://in.linkedin.com/in/vamshi-arelli" target="_blank">Vamshi Arelli</a></p>
-            </div>
-        </div>
-    </section>
+<script src="scripts.js"></script>
 
 </body>
 </html>
-
-<div class="iframe-container">
-    <iframe src="https://lumalabs.ai/embed/9cbfd4e1-e6c0-42b1-822b-d8d54e10203b?mode=sparkles&background=%23ffffff&color=%23000000&showTitle=true&loadBg=true&logoPosition=bottom-left&infoPosition=bottom-right&cinematicVideo=undefined&showMenu=false" width="500" height="500" frameborder="0" title="luma embed" style="border: none;"></iframe>
-</div>
