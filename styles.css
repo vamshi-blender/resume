@@ -1,145 +1,58 @@
 body {
-  font-family: Times New Roman, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4c4;
-  margin-bottom: 50px;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
 }
 
-#container {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
 }
 
-.column {
-  width: 49%;
-  padding: 10px;
-  box-sizing: border-box;
+nav ul {
+    list-style: none;
+    padding: 0;
 }
 
-#jobDescription {
-  margin-bottom: 20px;
+nav ul li {
+    display: inline;
+    margin: 0 10px;
 }
 
-.label {
-  margin-bottom: 5px;
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
 }
 
-input {
-  font-family: Aptos  , sans-serif;
-  width: 100%;
-  padding: 8px;
-  font-size: 17px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  resize: vertical;
+main {
+    padding: 20px;
 }
 
-textarea {
-  font-family: Aptos, sans-serif;
-  width: 100%;
-  padding: 8px;
-  font-size: 17px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  resize: vertical;
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
 }
 
-#char-count {
-  margin-top: 10px;
-  font-size: 17px;
-  color: #000;
-}
-#buttons {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
+.form-group {
+    margin-bottom: 15px;
 }
 
-#buttons .btn {
-  margin: 0 10px; /* Adjust the second value to set the desired space */
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
 }
 
-/* Add styling for checkboxes */
-.checkbox-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  align-items: center;
-  justify-content: center;
-}
-
-.checkbox-row label {
-  display: flex;
-  align-items: center;
-}
-
-.checkbox-row input {
-  margin-right: 5px;
-}
-/* Add the button styling */
-.btn:link,
-.btn:visited {
-  text-transform: uppercase;
-  text-decoration: none;
-  padding: 15px 40px;
-  display: inline-block;
-  border-radius: 100px;
-  transition: all .2s;
-  /*position: absolute; */
-}
-
-.btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.btn:active {
-  transform: translateY(-1px);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-}
-
-.btn-white {
-  background-color: #fff;
-  color: #000;
-}
-
-.btn::after {
-  content: "";
-  display: inline-block;
-  height: 100%;
-  width: 100%;
-  border-radius: 100px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  transition: all .4s;
-}
-
-.btn-white::after {
-  background-color: #f4f4c4;
-}
-
-.btn:hover::after {
-  transform: scaleX(1.4) scaleY(1.6);
-  opacity: 0;
-}
-
-.btn-animate {
-  animation: moveInBottom 0.5s ease-out;
-  animation-fill-mode: backwards;
-}
-
-@keyframes moveInBottom {
-  0% {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0px);
-  }
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
 }
