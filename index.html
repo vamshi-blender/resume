@@ -1,226 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Job Application Form</title>
-  <style>
-    body {
-      font-family: Times New Roman, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4c4;
-      margin-bottom: 50px;
-    }
-
-    #container {
-      display: flex;
-      justify-content: space-between;
-      padding: 20px;
-    }
-
-    .column {
-      width: 49%;
-      padding: 10px;
-      box-sizing: border-box;
-    }
-
-    #jobDescription {
-      margin-bottom: 20px;
-    }
-
-    .label {
-      margin-bottom: 5px;
-    }
-
-    input,
-    textarea {
-      font-family: Aptos, sans-serif;
-      width: 100%;
-      padding: 8px;
-      font-size: 17px;
-      border: 1px solid #ccc;
-      border-radius: 20px;
-      resize: vertical;
-    }
-
-    #char-count {
-      margin-top: 10px;
-      font-size: 17px;
-      color: #000;
-    }
-
-    #buttons {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-    }
-
-    #buttons .btn {
-      margin: 0 10px;
-    }
-
-    .checkbox-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .checkbox-row label {
-      display: flex;
-      align-items: center;
-    }
-
-    .checkbox-row input {
-      margin-right: 5px;
-    }
-
-    .btn:link,
-    .btn:visited {
-      text-transform: uppercase;
-      text-decoration: none;
-      padding: 15px 40px;
-      display: inline-block;
-      border-radius: 100px;
-      transition: all .2s;
-    }
-
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .btn:active {
-      transform: translateY(-1px);
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .btn-white {
-      background-color: #fff;
-      color: #000;
-    }
-
-    .btn::after {
-      content: "";
-      display: inline-block;
-      height: 100%;
-      width: 100%;
-      border-radius: 100px;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      transition: all .4s;
-    }
-
-    .btn-white::after {
-      background-color: #f4f4c4;
-    }
-
-    .btn:hover::after {
-      transform: scaleX(1.4) scaleY(1.6);
-      opacity: 0;
-    }
-
-    .btn-animate {
-      animation: moveInBottom 0.5s ease-out;
-      animation-fill-mode: backwards;
-    }
-
-    @keyframes moveInBottom {
-      0% {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-
-      100% {
-        opacity: 1;
-        transform: translateY(0px);
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-
-<div id="container">
-  <div class="column" id="jobDescription">
-    <h2>Resume Details</h2>
-    <label for="jobDescriptionText">Job Description:</label>
-    <textarea id="jobDescriptionText" rows="22" maxlength="2000" placeholder="Paste the Job Description Here (Org. Name & Job Role are Must) (2000 Char Max)..." oninput="updateCharacterCount()"></textarea>
-    <div id="char-count">0 characters</div>
-  </div>
-
-  <div class="column" id="resumeDetails">
-    <h2>Resume Details</h2>
-    <label for="name">Name:</label>
-    <input type="text" id="name" placeholder="Enter Name..">
-
-    <label for="contact">Contact Info:</label>
-    <input type="text" id="contact" placeholder="📍Hyderabad • ☏9xxxx • ✉@gmail.com • LinkedIn">
-    
-
-    <label for="education">Education:</label>
-    <textarea id="education" rows="1" placeholder="Matriculation, College (Institute name, Place of study, Year of Pass)"></textarea>
-
-    <label for="experience">Experience:</label>
-    <textarea id="experience" rows="1", placeholder="Org. Name, From-To, Responsibilities"></textarea>
-
-    <label for="skills">Skills:</label>
-    <textarea id="skills" rows="1", placeholder="Techical Skills Only(Eg: Python, Java, .Net)"></textarea>
-
-    <label for="certifications">Certifications:</label>
-    <textarea id="certifications" rows="1" placeholder="Certifiction Name & Obtained On"></textarea>
-
-    <label for="additionalInfo">Additional Information:</label>
-    <textarea id="additionalInfo" rows="4", placeholder="Additional Information, if any(Eg: Achievemets, Personal Projects, Publications, Patents etc.,)"></textarea>
-  </div>
-</div>
-
-<div id="sectionHeader" class="text-box">
-  <h2 style="text-align: center;">Sections to be Included</h2>
-  <div id="checkboxes" class="checkbox-row">
-    <label><input type="checkbox" id="objectiveCheckbox"> Objective</label>
-    <label><input type="checkbox" id="experienceCheckbox"> Professional_Experience</label>
-    <label><input type="checkbox" id="skillsCheckbox"> Skills</label>
-    <label><input type="checkbox" id="expertiseCheckbox"> Expertise</label>
-    <label><input type="checkbox" id="hobbiesCheckbox"> Hobbies</label>
-  </div>
-</div>  
-
-<div id="buttons" class="text-box">
-  <a href="#" class="btn btn-white btn-animate" onclick="submitForm()">Submit</a>
-  <a href="#" class="btn btn-white btn-animate" onclick="OpenPDF()">Open PDF</a>
-  <a href="#" class="btn btn-white btn-animate" onclick="OpenWord()">Open Word</a>
-  <a href="#" class="btn btn-white btn-animate" onclick="SavePDF()">Save PDF</a>
-  <a href="#" class="btn btn-white btn-animate" onclick="SaveWord()">Save Docx</a>
-  <a href="#" class="btn btn-white btn-animate" onclick="resetForm()">Reset</a>
-</div>
-
-
-  <script>
-    /* Your existing JS code goes here */
-    /* function submitForm() {
-      // Add your logic here to handle form submission
-      alert("Form submitted!");
-    } */
-
-    function resetForm() {
-      var confirmation = confirm("Are you sure you want to reset the form?");
-      if (confirmation) {
-        location.reload();
-      }
-    }
-
-    function updateCharacterCount() {
-      const textarea = document.getElementById('jobDescriptionText');
-      const charCountElement = document.getElementById('char-count');
-      const currentCount = textarea.value.length;
-      const maxLength = parseInt(textarea.getAttribute('maxlength'));
-      charCountElement.textContent = `${currentCount}/${maxLength} characters`;
-    }
-  </script>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Welcome to the Home Page</h1>
+        <p>This is a simple website to test the Digital Adaptation Platform.</p>
+    </main>
+    <footer>
+        <p>&copy; 2024 Simple Website</p>
+    </footer>
 </body>
 </html>
