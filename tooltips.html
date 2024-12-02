@@ -142,6 +142,65 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+
+        /* Dropdown Styles */
+        #dropdown {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            background: #fff;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        /* Multi-select Checkboxes */
+        .form-group div label {
+            display: block;
+            margin: 5px 0;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .form-group div label input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        /* Single Checkbox */
+        #singleCheckbox {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        label[for="singleCheckbox"] {
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        /* Radio Buttons */
+        .form-group div label input[type="radio"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .form-group div label {
+            font-size: 0.95rem;
+            margin: 5px 0;
+            cursor: pointer;
+        }
+
+        /* General consistency with existing layout */
+        .form-group {
+            margin: 15px 0;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
     </style>
 </head>
 <body>
@@ -223,6 +282,47 @@
             </div>
         </div>
     </div>
+    <div class="card">
+        <h2>Additional Elements</h2>
+        <!-- Dropdown -->
+        <div class="form-group">
+            <label for="dropdown">Select an option:</label>
+            <select id="dropdown" class="tooltip-target">
+                <option value="option1">Option 1</option>
+                <option value="option2">Option 2</option>
+                <option value="option3">Option 3</option>
+            </select>
+        </div>
+    
+        <!-- Multi-select Dropdown with Checkboxes -->
+        <div class="form-group">
+            <label>Choose options:</label>
+            <div>
+                <label><input type="checkbox" value="optionA" /> Option A</label>
+                <label><input type="checkbox" value="optionB" /> Option B</label>
+                <label><input type="checkbox" value="optionC" /> Option C</label>
+            </div>
+        </div>
+    
+        <!-- Single Checkbox -->
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="singleCheckbox" />
+                Accept terms and conditions
+            </label>
+        </div>
+    
+        <!-- Radio Buttons -->
+        <div class="form-group">
+            <label>Select your gender:</label>
+            <div>
+                <label><input type="radio" name="gender" value="male" /> Male</label>
+                <label><input type="radio" name="gender" value="female" /> Female</label>
+                <label><input type="radio" name="gender" value="other" /> Other</label>
+            </div>
+        </div>
+    </div>
+    
 
     <script>
         (function(g,u,i,d,e,s){g[e]=g[e]||[];var f=u.getElementsByTagName(i)[0];var k=u.createElement(i);k.async=true;k.src='https://static.userguiding.com/media/user-guiding-'+s+'-embedded.js';f.parentNode.insertBefore(k,f);if(g[d])return;var ug=g[d]={q:[]};ug.c=function(n){return function(){ug.q.push([n,arguments])};};var m=['previewGuide','finishPreview','track','identify','hideChecklist','launchChecklist'];for(var j=0;j<m.length;j+=1){ug[m[j]]=ug.c(m[j]);}})(window,document,'script','userGuiding','userGuidingLayer','XAC960224MUID');
