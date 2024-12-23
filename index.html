@@ -195,9 +195,9 @@
         <div class="grid"></div>
         <div class="floating-elements"></div>
         <div class="content">
-            <h1 class="glitch">Vamshi</h1>
+            <h1 class="glitch">Vamshi Sai Krishna Arelli</h1>
             <p class="subtitle">Welcome to the future of technology</p>
-            <a href="#" class="cta-button">Enter the void</a>
+            <a href="tooltips.html" class="cta-button" onclick="navigateToTooltips(event)">Enter the void</a>
         </div>
     </div>
 
@@ -239,6 +239,19 @@
                 ctaButton.style.transform = '';
             }, { once: true });
         });
+
+        // Handle navigation to tooltips page
+        function navigateToTooltips(event) {
+            event.preventDefault();
+            // Add a fade-out effect to the current page
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease-out';
+            
+            // Navigate to tooltips.html after the fade-out animation
+            setTimeout(() => {
+                window.location.href = 'tooltips.html';
+            }, 500);
+        }
 
         // Add parallax effect to grid
         document.addEventListener('mousemove', (e) => {
