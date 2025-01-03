@@ -227,18 +227,18 @@
         }
 
         // Add glitch effect to CTA button
-        const ctaButton = document.querySelector('.cta-button');
+        // const ctaButton = document.querySelector('.cta-button');
         
-        ctaButton.addEventListener('mouseover', () => {
-            const glitchInterval = setInterval(() => {
-                ctaButton.style.transform = `translate(${Math.random() * 4 - 2}px, ${Math.random() * 4 - 2}px)`;
-            }, 50);
+        // ctaButton.addEventListener('mouseover', () => {
+        //     const glitchInterval = setInterval(() => {
+        //         ctaButton.style.transform = `translate(${Math.random() * 4 - 2}px, ${Math.random() * 4 - 2}px)`;
+        //     }, 50);
             
-            ctaButton.addEventListener('mouseout', () => {
-                clearInterval(glitchInterval);
-                ctaButton.style.transform = '';
-            }, { once: true });
-        });
+        //     ctaButton.addEventListener('mouseout', () => {
+        //         clearInterval(glitchInterval);
+        //         ctaButton.style.transform = '';
+        //     }, { once: true });
+        // });
 
         // Handle navigation to tooltips page
         function navigateToTooltips(event) {
