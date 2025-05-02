@@ -8,12 +8,12 @@
 <body>
   <div class="form-container">
     <h2>School Application Form</h2>
-    <form>
+    <form id="applicationForm">
       <label for="fullname">Full Name</label>
       <input type="text" id="fullname" name="fullname" required>
 
       <label for="dob">Date of Birth</label>
-      <input type="date" id="dob" name="dob" required>
+      <input type="text" id="dob" name="dob" placeholder="dd/mm/yyyy" required>
 
       <label for="grade">Applying for Grade</label>
       <select id="grade" name="grade" required>
@@ -41,5 +41,19 @@
       <button type="submit">Submit Application</button>
     </form>
   </div>
+
+  <div id="toast">Application submitted successfully!</div>
+
+  <script>
+    document.getElementById('applicationForm').addEventListener('submit', function (e) {
+      e.preventDefault(); // prevent actual submission
+      const toast = document.getElementById('toast');
+      toast.className = 'show';
+      setTimeout(() => {
+        toast.className = toast.className.replace('show', '');
+        document.getElementById('applicationForm').reset();
+      }, 3000);
+    });
+  </script>
 </body>
 </html>
