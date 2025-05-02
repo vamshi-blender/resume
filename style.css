@@ -38,12 +38,16 @@ select {
   box-sizing: border-box;
 }
 
-.gender-options {
+.gender-options,
+.grade-options {
   margin-top: 5px;
 }
 
-.gender-options label {
+.gender-options label,
+.grade-options label {
   margin-right: 15px;
+  display: inline-block;
+  margin-bottom: 5px;
 }
 
 button {
