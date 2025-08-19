@@ -408,9 +408,32 @@
             }, 2000);
         });
     </script>
-<script>  (function(g,u,i,d,e,s){g[e]=g[e]||[];var f=u.getElementsByTagName(i)[0];var k=u.createElement(i);k.async=true;k.src='https://static.userguiding.com/media/user-guiding-'+s+'-embedded.js';f.parentNode.insertBefore(k,f);if(g[d])return;var ug=g[d]={q:[]};ug.c=function(n){return function(){ug.q.push([n,arguments])};};var m=['previewGuide','finishPreview','track','identify','hideChecklist','launchChecklist'];for(var j=0;j<m.length;j+=1){ug[m[j]]=ug.c(m[j]);}})(window,document,'script','userGuiding','userGuidingLayer','1BF1004435T6ID');</script>
-<script>(function(t,e,s,n){var o,a,c;t.SMCX=t.SMCX||[],e.getElementById(n)||(o=e.getElementsByTagName(s),a=o[o.length-1],c=e.createElement(s),c.type="text/javascript",c.async=!0,c.id=n,c.src="https://widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgd7mubQyKVAqDOgxjKf0pq8eq4BisWUMn7_2BY4IpoPYBPj.js",a.parentNode.insertBefore(c,a))})(window,document,"script","smcx-sdk");</script>
-<script>  (function(g,u,i,d,e,s){g[e]=g[e]||[];var f=u.getElementsByTagName(i)[0];var k=u.createElement(i);k.async=true;k.src='https://static.userguiding.com/media/user-guiding-'+s+'-embedded.js';f.parentNode.insertBefore(k,f);if(g[d])return;var ug=g[d]={q:[]};ug.c=function(n){return function(){ug.q.push([n,arguments])};};var m=['previewGuide','finishPreview','track','identify','hideChecklist','launchChecklist'];for(var j=0;j<m.length;j+=1){ug[m[j]]=ug.c(m[j]);}})(window,document,'script','userGuiding','userGuidingLayer','B9J104700ZW1ID');</script>
+<script>
+  (function (g, u, i, d, e, s) {
+    g[e] = g[e] || []
+    g.AccountId = s;
+    var f = u.getElementsByTagName(i)[0]
+    var k = u.createElement(i);
+    k.async = true;
+    k.src = 'https://user.quickadopt.in/embeded.js';
+    f.parentNode.insertBefore(k, f);
+    k.onload = function() {
+    if (g.captureUserDetails) {
+      g.captureUserDetails({
+          OrganizationId: 'organization_Id',  // add value of organization id 
+          UserId: 'user_id',                // add value of login user  id 
+          UserName: '',                     // add value of login user name 
+          EmailId: '',                      // add value of login user email
+          UserType: '',                     //add value of login user type
+          ScreenResolution : '',             //add value of screen resolution
+          SessionId: '',                     //add value of session Id
+          TimeZone: ''                        //add value of timezone
+      });
+    }
+  }
+  })(window, document, 'script', 'guiding', 'layer', '19082025-062705066-f7034f2f-4d89-44c4-9111-b2e3e353563b');
+ </script>
 </body>
 </html>
+
 
