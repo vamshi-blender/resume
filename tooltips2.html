@@ -410,38 +410,32 @@
             }, 2000);
         });
     </script>
-<script>
-  (function (g, u, i, d, e, s) {
-    g[e] = g[e] || []
-    g.AccountId = s;
-    var f = u.getElementsByTagName(i)[0]
-    var k = u.createElement(i);
-    k.async = true;
-    k.src = 'https://user.guidenow.ai/embeded.js';
-    f.parentNode.insertBefore(k, f);
-    k.onload = function() {
-    if (g.captureUserDetails) {
-      g.captureUserDetails({
-          OrganizationId: 'organization_Id',  // add value of organization id 
-          UserId: 'user_id',                // add value of login user  id 
-          UserName: '',                     // add value of login user name 
-          EmailId: '',                      // add value of login user email
-          UserType: '',                     //add value of login user type
-          ScreenResolution : '',             //add value of screen resolution
-          SessionId: '',                     //add value of session Id
-          TimeZone: ''                        //add value of timezone
-      });
-    }
-  }
-  })(window, document, 'script', 'guiding', 'layer', '19032025-090653638-dea8f21e-37b7-41d0-aa8e-c2d7ac454ab6');
- </script>
+    
+    <script>
+        (function (g, u, i, d, e, s) {
+            g[e] = g[e] || []
+            g.AccountId = s;
+            var f = u.getElementsByTagName(i)[0]
+            var k = u.createElement(i);
+            k.async = true;
+            k.src = 'https://user.guidenow.ai/embeded.js';
+            f.parentNode.insertBefore(k, f);
+            k.onload = function() {
+            if (g.captureUserDetails) {
+            g.captureUserDetails({
+                OrganizationId: 'organization_Id',  // add value of organization id 
+                UserId: 'user_id',                // add value of login user  id 
+                UserName: '',                     // add value of login user name 
+                EmailId: '',                      // add value of login user email
+                UserType: '',                     //add value of login user type
+                ScreenResolution : '',             //add value of screen resolution
+                SessionId: '',                     //add value of session Id
+                TimeZone: ''                        //add value of timezone
+            });
+            }
+        }
+        })(window, document, 'script', 'guiding', 'layer', '19032025-090653638-dea8f21e-37b7-41d0-aa8e-c2d7ac454ab6');
+    </script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
