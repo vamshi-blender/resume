@@ -3,7 +3,134 @@
 <head>
   <meta charset="UTF-8">
   <title>School Application Form</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .form-container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="file"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .grade-options, .gender-options, .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .grade-options label, .gender-options label, .checkbox-group label {
+      font-weight: normal;
+      margin-top: 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 25px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    /* Hidden fields styling */
+    .hidden-field {
+      display: none;
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 15px;
+      border-left: 4px solid #4CAF50;
+    }
+
+    .hidden-field.visible {
+      display: block;
+    }
+
+    .hidden-field label {
+      margin-top: 10px;
+    }
+
+    .hidden-field label:first-child {
+      margin-top: 0;
+    }
+
+    /* Toast styling */
+    #toast {
+      visibility: hidden;
+      min-width: 300px;
+      background-color: #4CAF50;
+      color: white;
+      text-align: center;
+      border-radius: 5px;
+      padding: 16px;
+      position: fixed;
+      z-index: 1;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 30px;
+    }
+
+    #toast.show {
+      visibility: visible;
+      animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+
+    @keyframes fadein {
+      from { bottom: 0; opacity: 0; }
+      to { bottom: 30px; opacity: 1; }
+    }
+
+    @keyframes fadeout {
+      from { bottom: 30px; opacity: 1; }
+      to { bottom: 0; opacity: 0; }
+    }
+  </style>
 </head>
 <body>
   <div class="form-container">
@@ -24,11 +151,109 @@
         <label><input type="radio" id="grade5" name="grade" value="5" required> Grade 5</label>
       </div>
 
+      <!-- Hidden fields for Grade 1 -->
+      <div id="grade1Fields" class="hidden-field">
+        <label for="kindergarten">Kindergarten Attended</label>
+        <input type="text" id="kindergarten" name="kindergarten" placeholder="Name of kindergarten">
+        
+        <label for="readingLevel">Reading Level</label>
+        <select id="readingLevel" name="readingLevel">
+          <option value="">Select Level</option>
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+      </div>
+
+      <!-- Hidden fields for Grade 2-3 -->
+      <div id="grade23Fields" class="hidden-field">
+        <label for="prevSchool">Previous School Name</label>
+        <input type="text" id="prevSchool" name="prevSchool" placeholder="Enter previous school">
+        
+        <label for="transferCert">Transfer Certificate Number</label>
+        <input type="text" id="transferCert" name="transferCert" placeholder="TC Number">
+      </div>
+
+      <!-- Hidden fields for Grade 4-5 -->
+      <div id="grade45Fields" class="hidden-field">
+        <label for="prevSchoolHigher">Previous School Name</label>
+        <input type="text" id="prevSchoolHigher" name="prevSchoolHigher" placeholder="Enter previous school">
+        
+        <label for="transferCertHigher">Transfer Certificate Number</label>
+        <input type="text" id="transferCertHigher" name="transferCertHigher" placeholder="TC Number">
+        
+        <label>Subjects of Interest</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="subjects" value="science"> Science</label>
+          <label><input type="checkbox" name="subjects" value="math"> Mathematics</label>
+          <label><input type="checkbox" name="subjects" value="arts"> Arts</label>
+          <label><input type="checkbox" name="subjects" value="sports"> Sports</label>
+        </div>
+
+        <label for="achievements">Previous Achievements</label>
+        <input type="text" id="achievements" name="achievements" placeholder="Any awards or achievements">
+      </div>
+
       <label>Gender</label>
       <div class="gender-options">
         <label><input type="radio" name="gender" value="male" required> Male</label>
         <label><input type="radio" name="gender" value="female" required> Female</label>
         <label><input type="radio" name="gender" value="other" required> Other</label>
+      </div>
+
+      <!-- Hidden fields for Male -->
+      <div id="maleFields" class="hidden-field">
+        <label>Sports Preference</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="maleSports" value="football"> Football</label>
+          <label><input type="checkbox" name="maleSports" value="cricket"> Cricket</label>
+          <label><input type="checkbox" name="maleSports" value="basketball"> Basketball</label>
+          <label><input type="checkbox" name="maleSports" value="swimming"> Swimming</label>
+        </div>
+        
+        <label for="uniformSizeMale">Uniform Size</label>
+        <select id="uniformSizeMale" name="uniformSizeMale">
+          <option value="">Select Size</option>
+          <option value="xs">Extra Small</option>
+          <option value="s">Small</option>
+          <option value="m">Medium</option>
+          <option value="l">Large</option>
+        </select>
+      </div>
+
+      <!-- Hidden fields for Female -->
+      <div id="femaleFields" class="hidden-field">
+        <label>Sports Preference</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="femaleSports" value="badminton"> Badminton</label>
+          <label><input type="checkbox" name="femaleSports" value="gymnastics"> Gymnastics</label>
+          <label><input type="checkbox" name="femaleSports" value="tennis"> Tennis</label>
+          <label><input type="checkbox" name="femaleSports" value="swimming"> Swimming</label>
+        </div>
+        
+        <label for="uniformSizeFemale">Uniform Size</label>
+        <select id="uniformSizeFemale" name="uniformSizeFemale">
+          <option value="">Select Size</option>
+          <option value="xs">Extra Small</option>
+          <option value="s">Small</option>
+          <option value="m">Medium</option>
+          <option value="l">Large</option>
+        </select>
+      </div>
+
+      <!-- Hidden fields for Other -->
+      <div id="otherFields" class="hidden-field">
+        <label for="preferredPronoun">Preferred Pronoun</label>
+        <select id="preferredPronoun" name="preferredPronoun">
+          <option value="">Select Pronoun</option>
+          <option value="he">He/Him</option>
+          <option value="she">She/Her</option>
+          <option value="they">They/Them</option>
+          <option value="other">Other</option>
+        </select>
+
+        <label for="additionalInfo">Additional Information</label>
+        <input type="text" id="additionalInfo" name="additionalInfo" placeholder="Any specific requirements">
       </div>
 
       <label for="email">Email</label>
@@ -44,13 +269,72 @@
   <div id="toast">Application submitted successfully!</div>
 
   <script>
-    document.getElementById('applicationForm').addEventListener('submit', function (e) {
-      e.preventDefault(); // prevent actual submission
+    // Grade selection handling
+    const gradeRadios = document.querySelectorAll('input[name="grade"]');
+    const grade1Fields = document.getElementById('grade1Fields');
+    const grade23Fields = document.getElementById('grade23Fields');
+    const grade45Fields = document.getElementById('grade45Fields');
+
+    gradeRadios.forEach(radio => {
+      radio.addEventListener('change', function() {
+        // Hide all grade fields first
+        grade1Fields.classList.remove('visible');
+        grade23Fields.classList.remove('visible');
+        grade45Fields.classList.remove('visible');
+
+        // Show relevant fields based on selection
+        const selectedGrade = parseInt(this.value);
+        
+        if (selectedGrade === 1) {
+          grade1Fields.classList.add('visible');
+        } else if (selectedGrade >= 2 && selectedGrade <= 3) {
+          grade23Fields.classList.add('visible');
+        } else if (selectedGrade >= 4 && selectedGrade <= 5) {
+          grade45Fields.classList.add('visible');
+        }
+      });
+    });
+
+    // Gender selection handling
+    const genderRadios = document.querySelectorAll('input[name="gender"]');
+    const maleFields = document.getElementById('maleFields');
+    const femaleFields = document.getElementById('femaleFields');
+    const otherFields = document.getElementById('otherFields');
+
+    genderRadios.forEach(radio => {
+      radio.addEventListener('change', function() {
+        // Hide all gender fields first
+        maleFields.classList.remove('visible');
+        femaleFields.classList.remove('visible');
+        otherFields.classList.remove('visible');
+
+        // Show relevant fields based on selection
+        if (this.value === 'male') {
+          maleFields.classList.add('visible');
+        } else if (this.value === 'female') {
+          femaleFields.classList.add('visible');
+        } else if (this.value === 'other') {
+          otherFields.classList.add('visible');
+        }
+      });
+    });
+
+    // Form submission handling
+    document.getElementById('applicationForm').addEventListener('submit', function(e) {
+      e.preventDefault();
       const toast = document.getElementById('toast');
       toast.className = 'show';
       setTimeout(() => {
         toast.className = toast.className.replace('show', '');
         document.getElementById('applicationForm').reset();
+        
+        // Hide all conditional fields after reset
+        grade1Fields.classList.remove('visible');
+        grade23Fields.classList.remove('visible');
+        grade45Fields.classList.remove('visible');
+        maleFields.classList.remove('visible');
+        femaleFields.classList.remove('visible');
+        otherFields.classList.remove('visible');
       }, 3000);
     });
   </script>
