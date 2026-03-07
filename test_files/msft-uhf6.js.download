@@ -1,0 +1,817 @@
+/**
+ * @fileoverview Microsoft Universal Header Footer (UHF) integration script
+ * @author Samual Krish Ravichandran (sravichandran@eighfold.ai)
+ * @description
+ * This script handles fetching and integrating Microsoft's Universal Header Footer (UHF)
+ * into the page. It makes an AJAX request to the UHF service to get header/footer content
+ * and injects it into the appropriate page elements. The script also handles styling
+ * customizations and sign-in functionality specific to the application.
+ *
+ * The main components are:
+ * - Fetching UHF content on page load
+ * - Injecting CSS, HTML and JavaScript from UHF response
+ * - Configuring sign-in behavior
+ * - Styling customizations for navbar and footer
+ */
+
+// Trigger fetchHeaderFooter after DOM is fully loaded
+$(document).ready(() => {
+  setTimeout(() => fetchHeaderFooter(), 0);
+});
+
+// Listen for URL changes and call fetchHeaderFooter
+let lastUrl = window.location.pathname;
+
+const subNav = [
+  {
+    "path": "/careers?recommended=1",
+    "text": "recommendedjobs",
+    "key": "recommendedjobs",
+    "icon": "FavoriteStar"
+  },
+  {
+    "path": "/careers/applications?tab=referrals",
+    "text": "Referrals",
+    "key": "referrals",
+    "icon": "TeamFavorite"
+  },
+  {
+    "text": "Notifications",
+    "key": "notifications",
+    "icon": "Ringer"
+  },
+  {
+    "path": "/careers/dashboard",
+    "text": "ActionCenter",
+    "key": "actioncenter",
+    "icon": "FolderOpen"
+  },
+  {
+    "path": "/careers/saved-jobs",
+    "text": "SavedJobs",
+    "key": "savedjobs",
+    "icon": "DoubleBookmark"
+  },
+  {
+    "path": "/careers/settings",
+    "text": "Settings",
+    "key": "settings",
+    "icon": "Settings"
+  }
+];
+
+// Create observer to watch for URL changes
+const observer = new MutationObserver(() => {
+  if (lastUrl !== window.location.pathname) {
+    lastUrl = window.location.pathname;
+    // hack to make sure the footer is always present on the success page
+    if (window.location.pathname.startsWith('/careers/apply/success')) {
+      if ($('footer').length === 0) {
+        $('#main-content').after('<footer></footer>');
+      }
+    }
+    setTimeout(() => fetchHeaderFooter(), 0);
+  }
+});
+
+// Start observing the document with the configured parameters
+observer.observe(document, { subtree: true, childList: true });
+
+// On page resize, let's make sure we call the disable search Form
+$(window).on('resize', () => {
+  $('#searchForm').css('display', 'none');
+});
+
+/**
+ * @function addHeaderFooterHtml
+ * @description
+ * Fetches and adds only the HTML content from the UHF service without additional functionality.
+ * Makes an AJAX call to retrieve the header/footer content and adds it to the page.
+ * This is a simplified version of fetchHeaderFooter that only updates the HTML content
+ * when the URL changes, without reinitializing other components.
+ *
+ * @example
+ * addHeaderFooterHtml();
+ *
+ * @returns {void}
+ *
+ * @fires addOnlyHtml - Adds just the HTML content from the UHF response
+ */
+function addHeaderFooterHtml() {
+  const urlForSubNav = $('#subnavUrl').text();
+  makeExternalCallToAddScript(urlForSubNav);
+}
+
+/**
+ * Adds header and footer content to the page from XML response
+ * @param {XMLDocument} responsexml - XML document containing header/footer content
+ * @description
+ * Extracts CSS includes, header HTML, footer HTML and JavaScript includes from the XML response.
+ * Appends CSS and JS to head, injects header into #configurable-navbar and footer into footer element.
+ * Also adds custom styles for navbar and footer links.
+ */
+function addHeaderAndFooter(responsexml) {
+  const $responsexml = $(responsexml);
+  const cssIncludes = $responsexml.find('cssIncludes').text().trim();
+  const headerHtml = $responsexml.find('headerHtml').text().trim();
+  const footerHtml = $responsexml.find('footerHtml').text().trim();
+  const javascriptIncludes = $responsexml.find('javascriptIncludes').text().trim();
+
+  $('head').append(cssIncludes);
+
+  // Add UI Fabric Icons CSS - load it directly from Microsoft CDN
+  $('head').append('<link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css">');
+
+  if (isNonPCSXPage()) {
+    $('#navbar-container').html(headerHtml);
+    $('#navbar-container').css('padding-top', '0');
+  } else {
+    $('#configurable-navbar').html(headerHtml);
+  }
+  $('footer').html(footerHtml);
+  $('head').append(javascriptIncludes);
+
+  // This is to hide the predefined navbar and inject custom script into /candidate/login page
+  $('.login-signup-layout nav.navbar').html(headerHtml);
+  $('.login-signup-footer').css('display', 'none');
+  $('.login-signup-layout nav.navbar').css({
+    'display': 'block',
+    'padding': '0'
+  });
+
+  $('<style>')
+    .text(`
+      #configurable-navbar a { font-size: inherit !important; }
+      footer a, .footer-container .footer-link { font-size: 12px !important;}
+      div>img[aria-hidden="true"] { display: none !important; }
+
+      /* To vertically align the footer links */
+      .footer-container { line-height: normal;}
+
+      @media (min-width: 768px) {
+        .js-paddle-items { display: flex !important; }
+      }
+
+      .js-paddle-items li:has(#c-shellmenu_68), .js-paddle-items li:has(#c-shellmenu_67), .js-paddle-items li:has(#uhc-c1-jointalentwork) { margin-left: auto !important; margin-top: 2px !important; }
+      .c-uhf-menu button:after { padding-top: 4px !important;}
+      #wcpCookiePreferenceCtrl input[type=radio] { border: 0 !important; vertical-align: top !important; }
+      .
+      /* Override Octuple bell icon with UI Fabric Ringer icon */
+      /* Target the specific icon container and SVG */
+      #candidate-notification-trigger button svg {
+        display: none !important;
+      }
+
+      .c-uhf-menu button {
+        z-index: 499 !important
+
+      }
+
+      .msame_Header {
+          z-index: 499 !important;
+      }
+
+      #searchForm, #cancel-search {
+        display: none !important;
+      }
+
+      /* Replace button content with Ringer icon */
+      #candidate-notification-trigger button {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+
+      #candidate-notification-trigger button[data-testid="notification-button-desktop-button"] svg {
+        display: none !important;
+      }
+
+      button[class*="notificationButton"] {
+        visibility: hidden !important;
+      }
+
+      div[class*="notificationDropdown"] {
+        position: absolute !important;
+        top: 5px !important;
+      }
+    `)
+    .appendTo('head');
+
+  // Inject header and footer HTML into the non PCSX page
+  if (isNonPCSXPage()) {
+    if (!window.location.pathname.startsWith('/careers/join')) {
+      $('<footer>').html(footerHtml).appendTo('body');
+    }
+    setTimeout(() => {
+      $('.page-footer[class*=footer]').css('display', 'none');
+    }, 1000);
+  }
+}
+
+/**
+ * @function addOnlyFooter
+ * @description
+ * Adds only the footer HTML to the page from the XML response.
+ * This is used to add the footer only once when the page is loaded.
+ * @param {XMLDocument} responsexml - XML document containing footer content
+ */
+function addOnlyFooter(responsexml) {
+  // Identifier 'globalPrivacyControlEnabled' has already been declared
+  // reset the flag
+  window.globalPrivacyControlEnabled = false;
+  navigator.globalPrivacyControlEnabled = false;
+  const $responsexml = $(responsexml);
+  const footerHtml = $responsexml.find('footerHtml').text().trim();
+  $('footer').html(footerHtml);
+}
+
+/**
+ * @function isNonPCSXPage
+ * @description
+ * Checks if the current page is not a PCSX page
+ *
+ * @returns {boolean}
+ */
+function isNonPCSXPage() {
+  return window.location.pathname.startsWith('/candidate_experience') ||
+    window.location.pathname.startsWith('/events') ||
+    window.location.pathname.startsWith('/careers/join');
+}
+
+/**
+ * @function isPCSXPage
+ * @description
+ * Checks if the current page is a PCSX page
+ *
+ * @returns {boolean}
+ */
+function isPCSXPage() {
+  return Boolean($('#pcsx-data')?.text());
+}
+
+/**
+ * @function getGroupID
+ * @description
+ * Gets the group ID from the window object or the login-signup-data element
+ * @example
+ * getGroupID();
+ */
+function getGroupID() {
+  let groupId = window._EF_GROUP_ID;
+  if (groupId === 'Unknown') {
+    groupId = undefined;
+  }
+  const loginSignupConfig = JSON.parse($('#login-signup-data').text() || '{}');
+  return groupId || loginSignupConfig?.domain;
+}
+
+/**
+ * @function getLanguageParam
+ * @description
+ * Gets the language parameter "hl" from the URL
+ * @example
+ * getLanguageParam();
+ */
+function getLanguageParam() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('hl');
+}
+
+/**
+ * Configures the sign in header element with click behavior
+ * @description
+ * Sets cursor and role properties on the header element and adds click handler
+ * to redirect to login page with the current group ID domain parameter.
+ * The header element is identified by class 'msame_Header'.
+ */
+function signInToSite() {
+  $('.msame_Header').css('cursor', 'pointer');
+  $('.msame_Header').css('role', 'button');
+  $('.msame_Header').on('click', function (event) {
+    event.preventDefault();
+    const hlParam = getLanguageParam();
+    window.location.href = `/candidate/login?domain=${getGroupID()}${hlParam ? `&hl=${hlParam}` : ''}`;
+  });
+}
+
+/**
+ * Redirects to the login page with the current group ID
+ * @description
+ * Simple helper function that redirects the user to the login page,
+ * appending the current group ID as a domain parameter in the URL.
+ * Used as a standalone function for direct sign in calls.
+ *
+ * @example
+ * signIn();
+ *
+ * @returns {void}
+ */
+function signIn() {
+  const hlParam = getLanguageParam();
+  window.location.href = `/candidate/login?domain=${getGroupID()}${hlParam ? `&hl=${hlParam}` : ''}`;
+}
+
+/**
+ * Signs out the user from the application
+ * @description
+ * Redirects the user to the logout page with the current group ID domain parameter.
+ * Used as a standalone function for direct sign out calls.
+ *
+ * @example
+ * signOutFromApp();
+ *
+ * @returns {void}
+ */
+function signOutFromApp() {
+  const hlParam = getLanguageParam();
+  window.location.href = `/logout?domain=${getGroupID()}${hlParam ? `&hl=${hlParam}` : ''}`
+}
+
+/**
+ * Adds script elements to document head from asset manifest response
+ * @description
+ * Takes an asset manifest response object and base URL, creates script elements
+ * for each script path in the response, and appends them to document head.
+ * Used to dynamically load JavaScript assets from Microsoft careers site.
+ *
+ * @param {Object} response - Asset manifest response containing script paths
+ * @param {string} baseUrl - Base URL to prepend to script paths
+ *
+ * @example
+ * addScriptsToHead(manifestResponse, 'https://careers.microsoft.com/aem/');
+ */
+function addScriptsToHead(response, baseUrl, deleteLoadedScripts = false) {
+  Object.values(response).forEach(scriptPath => {
+    if (!scriptPath.endsWith('.js')) { return; }
+
+    // Check if script is already loaded to prevent duplicates
+    const scriptSrc = baseUrl + scriptPath;
+    let existingScripts = document.querySelectorAll(`script[src="${scriptSrc}"]`);
+    if (deleteLoadedScripts) {
+      existingScripts.forEach(script => {
+        script.remove();
+      });
+    } else {
+      if (existingScripts.length > 0) {
+        return;
+      }
+    }
+
+    const scriptElement = document.createElement('script');
+    scriptElement.src = scriptSrc;
+
+    // Add error handling for script loading
+    scriptElement.onerror = function(error) {
+      console.error('Error loading script:', scriptSrc, error);
+    };
+
+    document.head.appendChild(scriptElement);
+  });
+}
+
+/**
+ * @function addScriptsToBody
+ * @description
+ * Adds script elements to document body from asset manifest response
+ * @param {Object} response - Asset manifest response containing script paths
+ * @param {string} baseUrl - Base URL to prepend to script paths
+ * @param {boolean} deleteLoadedScripts - Whether to delete already loaded scripts
+ * @example
+ * addScriptsToBody(manifestResponse, 'https://careers.microsoft.com/aem/');
+ */
+function addScriptsToBody(response, baseUrl, deleteLoadedScripts = false) {
+  Object.values(response).forEach(scriptPath => {
+    if (!scriptPath.endsWith('.js')) { return; }
+
+    // Check if script is already loaded to prevent duplicates
+    const scriptSrc = baseUrl + scriptPath;
+    let existingScripts = document.querySelectorAll(`script[src="${scriptSrc}"]`);
+    if (deleteLoadedScripts) {
+      existingScripts.forEach(script => {
+        script.remove();
+      });
+    } else {
+      if (existingScripts.length > 0) {
+        return;
+      }
+    }
+
+    const scriptElement = document.createElement('script');
+    scriptElement.src = scriptSrc;
+
+    // Add error handling for script loading
+    scriptElement.onerror = function(error) {
+      console.error('Error loading script:', scriptSrc, error);
+    };
+
+    document.body.appendChild(scriptElement);
+  });
+}
+
+/**
+ * Makes an external AJAX call to fetch and add scripts from an asset manifest
+ * @description
+ * Makes a synchronous AJAX GET request to fetch an asset manifest from the given URL.
+ * On success, extracts the base URL and calls addScriptsToHead() to add the scripts.
+ * Logs an error if the request fails.
+ *
+ * @param {string} url - The URL of the asset manifest JSON file to fetch
+ *
+ * @example
+ * makeExternalCallToAddScript('https://example.com/asset-manifest.json');
+ */
+function makeExternalCallToAddScript(url) {
+  // Skip if URL is empty or undefined
+  if (!url) {
+    console.warn('Attempted to load script with empty URL');
+    return;
+  }
+
+  // Keep track of loaded manifest URLs to prevent duplicates
+  window.loadedManifests = window.loadedManifests || {};
+  if (window.loadedManifests[url]) {
+    return;
+  }
+
+  $.ajax({
+    url: url,
+    method: 'GET',
+    success: function (response) {
+      const baseUrl = url.replace('asset-manifest.json', '');
+      window.loadedManifests[url] = true;
+      addScriptsToHead(response, baseUrl);
+    },
+    error: function (xhr, status, error) {
+      console.error('Error loading asset manifest:', error);
+    }
+  });
+}
+
+/**
+ * @function makeExternalCallToAddScriptToBody
+ * @description
+ * Makes an external AJAX call to fetch and add scripts to the body from an asset manifest
+ * @param {string} url - The URL of the asset manifest JSON file to fetch
+ * @example
+ * makeExternalCallToAddScriptToBody('https://example.com/asset-manifest.json');
+ */
+function makeExternalCallToAddScriptToBody(url) {
+  // Skip if URL is empty or undefined
+  if (!url) {
+    console.warn('Attempted to load script with empty URL');
+    return;
+  }
+
+  $.ajax({
+    url: url,
+    method: 'GET',
+    success: function (response) {
+      const baseUrl = url.replace('asset-manifest.json', '');
+      addScriptsToBody(response, baseUrl, true);
+    },
+    error: function (xhr, status, error) {
+      console.error('Error loading asset manifest:', error);
+    }
+  });
+}
+
+/**
+ * @function addSubNav
+ * @description
+ * Adds the subnav to the page
+ * @example
+ * addSubNav();
+ */
+function addSubNav() {
+  subNav.forEach(item => {
+    if (!item.path) {
+      return;
+    }
+    let separator = item.path.includes('?') ? '&' : '?';
+    item.path = `${item.path}${separator}domain=${getGroupID()}`;
+    const hlParam = getLanguageParam();
+    if (hlParam) {
+      separator = item.path.includes('?') ? '&' : '?';
+      item.path = `${item.path}${separator}hl=${hlParam}`;
+    }
+  });
+  const subNavElement = $('<div>', {
+    id: 'sub-nav',
+    'data-isexternal': 'true',
+    'data-isauthenticated': 'false',
+    'data-json': JSON.stringify(subNav),
+    'data-isef': 'true'
+  });
+
+  if (!$('#sub-nav').length) {
+    // append after the #configurable-navbar
+    $('#configurable-navbar').after(subNavElement);
+    $('#navbar-container').after(subNavElement);
+  }
+
+  const urlForSubNav = $('#subnavUrl').text();
+  setTimeout(() => {
+    delete window.loadedManifests?.[urlForSubNav];
+    makeExternalCallToAddScript(urlForSubNav);
+  }, 300);
+
+  const urlForWcp = $('#wcpUrl').text();
+  setTimeout(() => {
+    makeExternalCallToAddScript(urlForWcp);
+  }, 300);
+}
+
+/**
+ * @function addSubNavScripts
+ * @description
+ * Adds scripts to the body from the subnav URL
+ * @example
+ * addSubNavScripts();
+ */
+function addSubNavScripts() {
+  const urlForSubNav = $('#subnavUrl').text();
+  setTimeout(() => {
+    delete window.loadedManifests?.[urlForSubNav];
+    makeExternalCallToAddScriptToBody(urlForSubNav);
+  }, 300);
+}
+
+/**
+ * Enables the cookie consent banner functionality
+ * @description
+ * Prepends a cookie banner div to the body and initializes the WcpConsent library.
+ * Sets up consent change tracking and stores the siteConsent instance.
+ * The banner allows users to manage their cookie preferences.
+ *
+ * @example
+ * enableCookieBanner();
+ */
+
+function setUserInformation() {
+  const bootData = JSON.parse($('#pcsx-data').text() || '{}');
+  let profile = bootData.profile;
+  let user = bootData.user;
+  if (profile) {
+    profile.firstname = profile.displayFirstname || profile.firstname;
+    profile.lastname = profile.displayLastname || profile.lastname;
+  }
+
+  if (window.location.pathname.startsWith('/careers/join')) {
+    profile = {};
+    const smartApplyData = JSON.parse($('#smartApplyData').text() || '{}');
+    if (!smartApplyData?.candidate?.firstname) {
+      return;
+    }
+    profile.firstname = smartApplyData?.candidate?.firstname || '';
+    profile.lastname = smartApplyData?.candidate?.lastname || '';
+    profile.email = smartApplyData?.candidate?.email || '';
+    profile.displayName = smartApplyData?.candidate?.firstname + ' ' + smartApplyData?.candidate?.lastname;
+  } else if (isNonPCSXPage()) {
+    profile = {};
+    const navBarData = JSON.parse($('#navbar-data').text() || '{}');
+    const candidateAccount = navBarData?.navbarData?.desktop?.nav_right_items?.find(item => item.type === 'CANDIDATE_ACCOUNT');
+    if (!candidateAccount || candidateAccount.user_email === 'loggedout@none.com') {
+      return;
+    }
+
+    const firstName = candidateAccount.firstName || candidateAccount.user_name?.split(' ')?.[0] || '';
+    const lastName = candidateAccount.lastName || candidateAccount.user_name?.split(' ')?.[1] || '';
+    profile.firstname = firstName;
+    profile.lastname = lastName;
+    profile.email = candidateAccount.user_email || '';
+    profile.displayName = candidateAccount.user_name || '';
+  }
+
+  if (!profile) {
+    return;
+  }
+
+  if (isPCSXPage() && !user) {
+    return;
+  }
+
+  // if you are logged in, then you should hide the last child of the #uhf-g-nav
+  if (profile) {
+    $('#uhf-g-nav').find('li:has(#c-shellmenu_68), li:has(#c-shellmenu_67, li:has(#uhc-c1-jointalentwork)').css('display', 'none');
+  }
+
+  const hlParam = getLanguageParam();
+
+  let shellOptions = {
+    meControlOptions: {
+      apiGeneration: 'GEN2',
+      authProviderConfig: {
+        type: 'partnerManaged',
+        appSignInUrl: `/candidate/login?domain=${getGroupID()}${hlParam ? `&hl=${hlParam}` : ''}`,
+        appSignInToUrl: `/candidate/login?domain=${getGroupID()}${hlParam ? `&hl=${hlParam}` : ''}`,
+        appSignOutUrl: `/logout?domain=${getGroupID()}${hlParam ? `&hl=${hlParam}` : ''}`,
+        appSwitchUrl: '',
+        appSwitchToUrl: '',
+        signOutFromApp: signOutFromApp,
+        signIn: signIn,
+        msa: {},
+        aad: {}
+      },
+      currentAccount: {
+        type: 'msa',
+        authenticatedState: 'signedIn',
+        memberName: profile.email,
+        firstName: profile.firstname,
+        lastName: profile.lastname,
+        displayName: profile.email
+      }
+    }
+  };
+  $('#sub-nav').attr('data-isauthenticated', 'true');
+
+  if (window.msCommonShell) {
+    setTimeout(() => {
+      window.msCommonShell.load(shellOptions);
+    }, 100);
+  } else {
+    window.onShellReadyToLoad = function () {
+      window.onShellReadyToLoad = null;
+      setTimeout(() => {
+        window.msCommonShell.load(shellOptions);
+      }, 100);
+    };
+  }
+}
+
+/**
+ * @function setUserInformation
+ * @description
+ * Sets up user profile information for the Microsoft Common Shell.
+ * Configures authentication options and user account details based on the boot data.
+ * This enables personalized experiences and proper authentication flows in the shell header.
+ *
+ * @example
+ * setUserInformation();
+ */
+
+function enableCookieBanner() {
+  // Skip if cookie banner is already present or WcpConsent is already initialized
+  if ($('#gcsVNextCookieBannerId').length || window.siteConsent) {
+    return;
+  }
+  $('body').prepend('<div id=\"gcsVNextCookieBannerId\"></div>');
+
+  // Add a safety check for duplicate initializations
+  window.wcpConsentLoaded = window.wcpConsentLoaded || false;
+  if (window.wcpConsentLoaded) {
+    return;
+  }
+  window.wcpConsentLoaded = true;
+}
+
+/**
+ * @function disableUHFFunctionality
+ * @description
+ * Disables various UHF (Universal Header Footer) functionalities
+ * by hiding or removing specific elements from the page.
+ */
+function disableUHFFunctionality() {
+  // Hide search functionality
+  // $('#searchForm').css('display', 'none');
+  // $('#uhf-c-nav').css('display', 'none');
+  // disable onclick event on profile picture (poll until element exists; UHF injects it asynchronously)
+  const pictureInterval = setInterval(function () {
+    const el = document.getElementById('mectrl_currentAccount_picture');
+    if (el) {
+      clearInterval(pictureInterval);
+      el.removeAttribute('href');
+      el.setAttribute('tabindex', '-1');
+      $(el).css('pointer-events', 'none').css('cursor', 'default');
+    }
+  }, 500);
+
+  if (window.location.pathname.startsWith('/candidate/login')) {
+    $('#meControl').css('display', 'none');
+  }
+
+  $('#searchForm').css('display', 'none');
+  $('#cancel-search').css('display', 'none');
+  $('#searchForm').html('');
+  $('.c-uhfh-actions').prepend(`<div class="c-search">\
+      <button id="search" aria-label="${window.i18nLang.toLowerCase() === 'fr-ca' ? 'Rechercher des emplois' : 'Search jobs'}" class="c-glyph" data-bi-mto="true" style="overflow-x: visible;" aria-expanded="false">\
+        <span role="presentation" style="overflow-x: visible;">${window.i18nLang.toLowerCase() === 'fr-ca' ? 'Rechercher' : 'Search'}</span>\
+        <span role="tooltip" class="c-uhf-tooltip c-uhf-search-tooltip" style="overflow-x: visible;">${window.i18nLang.toLowerCase() === 'fr-ca' ? 'Rechercher des emplois' : 'Search jobs'}</span>\
+      </button>\
+    </div>`);
+  $('button#search').on('click', function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    $('.c-search').css('display', 'none');
+    let searchUrl = '/careers/search?domain=' + getGroupID();
+    const hlParam = getLanguageParam();
+    if (hlParam) {
+      searchUrl += `&hl=${hlParam}`;
+    }
+    window.location.href = searchUrl;
+  });
+}
+
+/**
+ * @function addAnalytics
+ * @description
+ * Initializes the Application Insights analytics library with the provided configuration.
+ * Sets up auto-capture for various events and ensures proper initialization.
+ *
+ * @example
+ * addAnalytics();
+ */
+function addAnalytics() {
+  if (!oneDS?.ApplicationInsights) {
+    return;
+  }
+
+  const analytics = new oneDS.ApplicationInsights();
+  var config = {
+    instrumentationKey: "3b0d22905e6846b7804a37da33d38224-fdf059fb-6eab-4408-97ff-6aaed601a8f2-7767",
+    channelConfiguration: { // Post channel configuration
+      eventsLimitInMem: 50
+    },
+    propertyConfiguration: { // Properties Plugin configuration
+      env: "PPE" // Environment can be set to PPE or PROD as needed.
+    },
+    webAnalyticsConfiguration: { // Web Analytics Plugin configuration
+      autoCapture: {
+        scroll: true,
+        pageView: true,
+        onLoad: true,
+        onUnload: true,
+        click: true,
+        resize: true,
+        jsError: true
+      }
+    }
+  };
+
+  analytics.initialize(config, []);
+}
+
+/**
+ * @function fetchHeaderFooter
+ * @description
+ * Fetches the Microsoft header and footer XML from the UHF service.
+ * Makes an AJAX call to retrieve the header/footer content and initializes
+ * various components like sign-in, user information, and cookie consent banner.
+ *
+ * @example
+ * fetchHeaderFooter();
+ *
+ * @returns {void}
+ *
+ * @fires addHeaderAndFooter - Adds the fetched header/footer content to the page
+ * @fires signInToSite - Handles user authentication
+ * @fires setUserInformation - Sets up user profile details
+ * @fires enableCookieBanner - Initializes the cookie consent banner
+ */
+function fetchHeaderFooter() {
+  let url = $('#uhfUrl').text();
+  if (window.i18nLang?.toLowerCase() === 'fr-ca') {
+    url = url.replace('en-US', 'fr-ca');
+  }
+  $.ajax({
+    url: url,
+    dataType: 'xml',
+    success: function (responsexml) {
+      if (window.loadedExternalAssets) {
+        try {
+          addOnlyFooter(responsexml);
+        } catch (error) {
+          console.error('Error adding only footer:', error);
+        }
+        addSubNavScripts();
+        return;
+      }
+      addHeaderAndFooter(responsexml);
+      addSubNav();
+      setUserInformation();
+      signInToSite();
+      enableCookieBanner();
+      // addAnalytics();
+      disableUHFFunctionality();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.loadedExternalAssets = true;
+      window.addEventListener('authenticationRouteChange', (event) => {
+        console.log('found authenticationRouteChange event');
+        console.log('uhf', $('#uhf-g-nav'));
+        if (!$('#uhf-g-nav').length) {
+          addHeaderAndFooter(responsexml);
+          addSubNav();
+          setUserInformation();
+          signInToSite();
+          enableCookieBanner();
+          // addAnalytics();
+          disableUHFFunctionality();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          window.loadedExternalAssets = true;
+        }
+      });
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.error('Error fetching header/footer:', textStatus, errorThrown);
+    }
+  });
+}

@@ -1,0 +1,22 @@
+/*
+To add icons to this set, upload all svgs referenced here to https://icomoon.io/
+Then download a new webfont and update the font and styles here as necessary
+Make sure that the glyphs are the same in the old a new versions.
+*/
+@font-face {
+  font-family: 'fa-overrides';
+  src: url('../fonts/fontawesome-override-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+/* This is in ../images/twitter-x.svg */
+.fab.fa-twitter-x {
+  font-family: 'fa-overrides' !important;
+  &::before {
+    content: "\e61b" !important;
+    display: inline-block;
+    transform: scale(1.05) translateY(-7%);
+  }
+}
